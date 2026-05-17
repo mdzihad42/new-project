@@ -93,3 +93,200 @@ window.addEventListener('scroll', () => {
     if(stars2) stars2.style.transform = `translateY(${scrollY * -0.3}px)`;
     if(stars3) stars3.style.transform = `translateY(${scrollY * -0.5}px)`;
 });
+
+// --- Interactive Glowing Snake Mouse Follower ---
+const snakeCanvas = document.createElement('canvas');
+snakeCanvas.id = 'snakeCanvas';
+document.body.appendChild(snakeCanvas);
+
+Object.assign(snakeCanvas.style, {
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    width: '100vw',
+    height: '100vh',
+    pointerEvents: 'none',
+    zIndex: '-1'
+});
+
+const ctx = snakeCanvas.getContext('2d');
+
+let width, height;
+function resizeCanvas() {
+    width = snakeCanvas.width = window.innerWidth;
+    height = snakeCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const mouse = { x: -1000, y: -1000, active: false };
+let idleTimer;
+
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+    
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+        mouse.active = false;
+    }, 2000); // Snake wanders after 2s of no mouse movement
+});
+
+window.addEventListener('mouseleave', () => {
+    mouse.active = false;
+});
+
+// Touch support
+window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+        mouse.x = e.touches[0].clientX;
+        mouse.y = e.touches[0].clientY;
+        mouse.active = true;
+        
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => { mouse.active = false; }, 2000);
+    }
+});
+window.addEventListener('touchend', () => {
+    mouse.active = false;
+});
+
+const points = [];
+const numPoints = 40; // Length of the snake
+
+// Initialize points
+for (let i = 0; i < numPoints; i++) {
+    points.push({ x: width / 2, y: height / 2 });
+}
+
+let wanderAngle = Math.random() * Math.PI * 2;
+let targetX = width / 2;
+let targetY = height / 2;
+
+function animateSnake() {
+    ctx.clearRect(0, 0, width, height);
+
+    // Determine target based on mode (follow vs wander)
+    let isFollowing = false;
+    
+    if (mouse.active) {
+        let distToMouse = Math.hypot(mouse.x - points[0].x, mouse.y - points[0].y);
+        // Follow if mouse is within 500px range
+        if (distToMouse < 500) {
+            targetX = mouse.x;
+            targetY = mouse.y;
+            isFollowing = true;
+        }
+    }
+
+    if (!isFollowing) {
+        // Autonomous wandering
+        wanderAngle += (Math.random() - 0.5) * 0.4; // Random angle drift
+        const speed = 4;
+        targetX += Math.cos(wanderAngle) * speed;
+        targetY += Math.sin(wanderAngle) * speed;
+
+        // Bounce off screen edges softly
+        const margin = 50;
+        if (targetX < margin) { targetX = margin; wanderAngle = 0; }
+        if (targetX > width - margin) { targetX = width - margin; wanderAngle = Math.PI; }
+        if (targetY < margin) { targetY = margin; wanderAngle = Math.PI / 2; }
+        if (targetY > height - margin) { targetY = height - margin; wanderAngle = -Math.PI / 2; }
+    }
+
+    // Move head towards target with easing
+    let dx = targetX - points[0].x;
+    let dy = targetY - points[0].y;
+    let easing = isFollowing ? 0.15 : 0.05;
+    
+    points[0].x += dx * easing;
+    points[0].y += dy * easing;
+
+    // Move the rest of the body
+    for (let i = 1; i < numPoints; i++) {
+        let pt = points[i];
+        let prevPt = points[i - 1];
+        
+        let dirX = prevPt.x - pt.x;
+        let dirY = prevPt.y - pt.y;
+        
+        // Elastic trailing effect
+        pt.x += dirX * 0.45;
+        pt.y += dirY * 0.45;
+    }
+
+    // Draw the glowing snake body (Tapered)
+    for (let i = numPoints - 1; i > 0; i--) {
+        ctx.beginPath();
+        let radius = 12 - (i * 10 / numPoints); // Tapering from 12 at head to 2 at tail
+        if (radius < 2) radius = 2;
+        ctx.arc(points[i].x, points[i].y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(69, 243, 255, 0.8)';
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#45f3ff';
+        ctx.fill();
+    }
+    
+    // Calculate head angle
+    let dxAngle = points[0].x - points[1].x;
+    let dyAngle = points[0].y - points[1].y;
+    let angle = Math.atan2(dyAngle, dxAngle);
+    
+    // Draw head with eyes and tongue
+    ctx.save();
+    ctx.translate(points[0].x, points[0].y);
+    ctx.rotate(angle);
+    
+    // Head shape
+    ctx.beginPath();
+    ctx.ellipse(0, 0, 16, 12, 0, 0, Math.PI * 2);
+    ctx.fillStyle = '#0b0c10'; // Dark head body
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#45f3ff'; // Cyan border
+    ctx.stroke();
+
+    // Eyes
+    ctx.beginPath();
+    ctx.arc(6, -5, 3, 0, Math.PI * 2); // Left eye
+    ctx.arc(6, 5, 3, 0, Math.PI * 2);  // Right eye
+    ctx.fillStyle = '#ff0055'; // Red glowing eyes
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = '#ff0055';
+    ctx.fill();
+    
+    // Black Pupils
+    ctx.shadowBlur = 0;
+    ctx.beginPath();
+    ctx.arc(7, -5, 1.5, 0, Math.PI * 2); // Left pupil
+    ctx.arc(7, 5, 1.5, 0, Math.PI * 2);  // Right pupil
+    ctx.fillStyle = '#000000';
+    ctx.fill();
+    
+    // Tongue animation (flicks in and out)
+    let time = Date.now() / 150; // Speed of flicking
+    let tongueLength = Math.max(0, Math.sin(time)) * 18; // Only positive part of sine wave
+    
+    if (tongueLength > 2) {
+        ctx.beginPath();
+        ctx.moveTo(16, 0); // Start at the tip of the head
+        ctx.lineTo(16 + tongueLength, 0); // Main tongue
+        ctx.lineTo(16 + tongueLength + 5, -4); // Fork left
+        ctx.moveTo(16 + tongueLength, 0);
+        ctx.lineTo(16 + tongueLength + 5, 4);  // Fork right
+        
+        ctx.strokeStyle = '#ff0055';
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 5;
+        ctx.shadowColor = '#ff0055';
+        ctx.stroke();
+    }
+
+    ctx.restore();
+
+    requestAnimationFrame(animateSnake);
+}
+
+// Start animation
+animateSnake();
