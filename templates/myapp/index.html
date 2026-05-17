@@ -1,22 +1,26 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if hero %}{{ hero.full_name }} | Portfolio{% else %}My Portfolio{% endif %}</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap"
+        rel="stylesheet">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body>
     <!-- Starry Background -->
     <div id="stars"></div>
@@ -46,31 +50,35 @@
     <section id="home" class="hero">
         <div class="hero-content glass-panel">
             {% if hero %}
-                <div class="hero-text">
-                    <p class="greeting">Hello, I'm</p>
-                    <h1 class="glitch" data-text="{{ hero.full_name }}">{{ hero.full_name }}</h1>
-                    <h2 class="typing-text">{{ hero.short_title }}</h2>
-                    <p class="short-intro">{{ hero.short_intro }}</p>
-                    <div class="hero-buttons">
-                        {% if hero.resume %}
-                        <a href="{{ hero.resume.url }}" class="btn btn-primary" download>Download CV <i class="fas fa-download"></i></a>
-                        {% endif %}
-                        <a href="#contact" class="btn btn-secondary">Contact Me <i class="fas fa-envelope"></i></a>
-                    </div>
-                    <div class="social-links">
-                        {% if hero.github_link %}<a href="{{ hero.github_link }}" target="_blank"><i class="fab fa-github"></i></a>{% endif %}
-                        {% if hero.linkedin_link %}<a href="{{ hero.linkedin_link }}" target="_blank"><i class="fab fa-linkedin"></i></a>{% endif %}
-                        {% if hero.facebook_link %}<a href="{{ hero.facebook_link }}" target="_blank"><i class="fab fa-facebook"></i></a>{% endif %}
-                    </div>
-                </div>
-                <div class="hero-image">
-                    {% if hero.profile_photo %}
-                    <img src="{{ hero.profile_photo.url }}" alt="{{ hero.full_name }}">
+            <div class="hero-text">
+                <p class="greeting">Hello, I'm</p>
+                <h1 class="glitch" data-text="{{ hero.full_name }}">{{ hero.full_name }}</h1>
+                <h2 class="typing-text">{{ hero.short_title }}</h2>
+                <p class="short-intro">{{ hero.short_intro }}</p>
+                <div class="hero-buttons">
+                    {% if hero.resume %}
+                    <a href="{{ hero.resume.url }}" class="btn btn-primary" download>Download CV <i
+                            class="fas fa-download"></i></a>
                     {% endif %}
+                    <a href="#contact" class="btn btn-secondary">Contact Me <i class="fas fa-envelope"></i></a>
                 </div>
+                <div class="social-links">
+                    {% if hero.github_link %}<a href="{{ hero.github_link }}" target="_blank"><i
+                            class="fab fa-github"></i></a>{% endif %}
+                    {% if hero.linkedin_link %}<a href="{{ hero.linkedin_link }}" target="_blank"><i
+                            class="fab fa-linkedin"></i></a>{% endif %}
+                    {% if hero.facebook_link %}<a href="{{ hero.facebook_link }}" target="_blank"><i
+                            class="fab fa-facebook"></i></a>{% endif %}
+                </div>
+            </div>
+            <div class="hero-image">
+                {% if hero.profile_photo %}
+                <img src="{{ hero.profile_photo.url }}" alt="{{ hero.full_name }}">
+                {% endif %}
+            </div>
             {% else %}
-                <h1>Welcome to My Portfolio</h1>
-                <p>Please configure the Hero section in the admin panel.</p>
+            <h1>Welcome to My Portfolio</h1>
+            <p>Please configure the Hero section in the admin panel.</p>
             {% endif %}
         </div>
     </section>
@@ -80,27 +88,28 @@
         <h2 class="section-title">About <span>Me</span></h2>
         <div class="about-container glass-panel">
             {% if about %}
-                <div class="about-image">
-                    {% if about.profile_image %}
-                    <img src="{{ about.profile_image.url }}" alt="Profile Image">
-                    {% endif %}
-                </div>
-                <div class="about-info">
-                    <p class="bio">{{ about.long_bio }}</p>
-                    <ul class="personal-info">
-                        <li><strong>Birthday:</strong> {{ about.date_of_birth }}</li>
-                        <li><strong>Email:</strong> {{ about.email }}</li>
-                        <li><strong>Phone:</strong> {{ about.phone }}</li>
-                        <li><strong>Address:</strong> {{ about.address }}</li>
-                        <li><strong>Languages:</strong> {{ about.languages }}</li>
-                        <li><strong>Hobbies:</strong> {{ about.hobbies }}</li>
-                    </ul>
-                    {% if about.cv_download_link %}
-                    <a href="{{ about.cv_download_link }}" class="btn btn-primary" target="_blank">View Extended CV <i class="fas fa-external-link-alt"></i></a>
-                    {% endif %}
-                </div>
+            <div class="about-image">
+                {% if about.profile_image %}
+                <img src="{{ about.profile_image.url }}" alt="Profile Image">
+                {% endif %}
+            </div>
+            <div class="about-info">
+                <p class="bio">{{ about.long_bio }}</p>
+                <ul class="personal-info">
+                    <li><strong>Birthday:</strong> {{ about.date_of_birth }}</li>
+                    <li><strong>Email:</strong> {{ about.email }}</li>
+                    <li><strong>Phone:</strong> {{ about.phone }}</li>
+                    <li><strong>Address:</strong> {{ about.address }}</li>
+                    <li><strong>Languages:</strong> {{ about.languages }}</li>
+                    <li><strong>Hobbies:</strong> {{ about.hobbies }}</li>
+                </ul>
+                {% if about.cv_download_link %}
+                <a href="{{ about.cv_download_link }}" class="btn btn-primary" target="_blank">View Extended CV <i
+                        class="fas fa-external-link-alt"></i></a>
+                {% endif %}
+            </div>
             {% else %}
-                <p>Please configure the About section in the admin panel.</p>
+            <p>Please configure the About section in the admin panel.</p>
             {% endif %}
         </div>
     </section>
@@ -110,21 +119,21 @@
         <h2 class="section-title">My <span>Skills</span></h2>
         <div class="skills-container">
             {% if skills %}
-                {% for skill in skills %}
-                <div class="skill-card glass-panel">
-                    <div class="skill-icon">
-                        <i class="{{ skill.icon_class }}"></i>
-                    </div>
-                    <h3>{{ skill.name }}</h3>
-                    <p class="skill-category">{{ skill.category }}</p>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: {{ skill.level }}%;"></div>
-                    </div>
-                    <span class="skill-level">{{ skill.level }}%</span>
+            {% for skill in skills %}
+            <div class="skill-card glass-panel">
+                <div class="skill-icon">
+                    <i class="{{ skill.icon_class }}"></i>
                 </div>
-                {% endfor %}
+                <h3>{{ skill.name }}</h3>
+                <p class="skill-category">{{ skill.category }}</p>
+                <div class="progress-bar">
+                    <div class="progress" style="width: {{ skill.level }}%;"></div>
+                </div>
+                <span class="skill-level">{{ skill.level }}%</span>
+            </div>
+            {% endfor %}
             {% else %}
-                <p>No skills added yet.</p>
+            <p>No skills added yet.</p>
             {% endif %}
         </div>
     </section>
@@ -136,42 +145,43 @@
                 <h2 class="section-title"><span>Experience</span></h2>
                 <div class="timeline">
                     {% if experiences %}
-                        {% for exp in experiences %}
-                        <div class="timeline-item glass-panel">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date">{{ exp.start_date|date:"M Y" }} - {% if exp.end_date %}{{ exp.end_date|date:"M Y" }}{% else %}Present{% endif %}</div>
-                            <h3>{{ exp.job_title }}</h3>
-                            <h4>{{ exp.company_name }}</h4>
-                            <p>{{ exp.responsibilities }}</p>
-                            {% if exp.company_logo %}
-                            <img src="{{ exp.company_logo.url }}" class="timeline-logo" alt="{{ exp.company_name }}">
-                            {% endif %}
-                        </div>
-                        {% endfor %}
+                    {% for exp in experiences %}
+                    <div class="timeline-item glass-panel">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">{{ exp.start_date|date:"M Y" }} - {% if exp.end_date %}{{
+                            exp.end_date|date:"M Y" }}{% else %}Present{% endif %}</div>
+                        <h3>{{ exp.job_title }}</h3>
+                        <h4>{{ exp.company_name }}</h4>
+                        <p>{{ exp.responsibilities }}</p>
+                        {% if exp.company_logo %}
+                        <img src="{{ exp.company_logo.url }}" class="timeline-logo" alt="{{ exp.company_name }}">
+                        {% endif %}
+                    </div>
+                    {% endfor %}
                     {% else %}
-                        <p>No experience added.</p>
+                    <p>No experience added.</p>
                     {% endif %}
                 </div>
             </div>
-            
+
             <div class="timeline-column">
                 <h2 class="section-title"><span>Education</span></h2>
                 <div class="timeline">
                     {% if educations %}
-                        {% for edu in educations %}
-                        <div class="timeline-item glass-panel">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date">Passing Year: {{ edu.passing_year }}</div>
-                            <h3>{{ edu.degree }}</h3>
-                            <h4>{{ edu.institution_name }}</h4>
-                            <p>{{ edu.description }}</p>
-                            {% if edu.institute_logo %}
-                            <img src="{{ edu.institute_logo.url }}" class="timeline-logo" alt="{{ edu.institution_name }}">
-                            {% endif %}
-                        </div>
-                        {% endfor %}
+                    {% for edu in educations %}
+                    <div class="timeline-item glass-panel">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">Passing Year: {{ edu.passing_year }}</div>
+                        <h3>{{ edu.degree }}</h3>
+                        <h4>{{ edu.institution_name }}</h4>
+                        <p>{{ edu.description }}</p>
+                        {% if edu.institute_logo %}
+                        <img src="{{ edu.institute_logo.url }}" class="timeline-logo" alt="{{ edu.institution_name }}">
+                        {% endif %}
+                    </div>
+                    {% endfor %}
                     {% else %}
-                        <p>No education added.</p>
+                    <p>No education added.</p>
                     {% endif %}
                 </div>
             </div>
@@ -183,38 +193,42 @@
         <h2 class="section-title">My <span>Projects</span></h2>
         <div class="projects-grid">
             {% if projects %}
-                {% for project in projects %}
-                <div class="project-card glass-panel">
-                    <div class="project-img">
-                        {% if project.thumbnail %}
-                        <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}">
-                        {% endif %}
-                        <div class="project-overlay">
-                            <div class="project-links">
-                                <a href="{% url 'project_detail' project.pk %}" title="View Details"><i class="fas fa-eye"></i></a>
-                                {% if project.live_demo_link %}
-                                <a href="{{ project.live_demo_link }}" target="_blank" title="Live Demo"><i class="fas fa-external-link-alt"></i></a>
-                                {% endif %}
-                                {% if project.github_link %}
-                                <a href="{{ project.github_link }}" target="_blank" title="GitHub Repo"><i class="fab fa-github"></i></a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="project-info">
-                        <span class="project-category">{{ project.category }}</span>
-                        <h3><a href="{% url 'project_detail' project.pk %}" style="color: inherit;">{{ project.title }}</a></h3>
-                        <p>{{ project.description|truncatewords:20 }}</p>
-                        <div class="tech-stack">
-                            {% for tech in project.tech_stack.split %}
-                            <span class="tech-tag">{{ tech }}</span>
-                            {% endfor %}
+            {% for project in projects %}
+            <div class="project-card glass-panel">
+                <div class="project-img">
+                    {% if project.thumbnail %}
+                    <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}">
+                    {% endif %}
+                    <div class="project-overlay">
+                        <div class="project-links">
+                            <a href="{% url 'project_detail' project.pk %}" title="View Details"><i
+                                    class="fas fa-eye"></i></a>
+                            {% if project.live_demo_link %}
+                            <a href="{{ project.live_demo_link }}" target="_blank" title="Live Demo"><i
+                                    class="fas fa-external-link-alt"></i></a>
+                            {% endif %}
+                            {% if project.github_link %}
+                            <a href="{{ project.github_link }}" target="_blank" title="GitHub Repo"><i
+                                    class="fab fa-github"></i></a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                <div class="project-info">
+                    <span class="project-category">{{ project.category }}</span>
+                    <h3><a href="{% url 'project_detail' project.pk %}" style="color: inherit;">{{ project.title }}</a>
+                    </h3>
+                    <p>{{ project.description|truncatewords:20 }}</p>
+                    <div class="tech-stack">
+                        {% for tech in project.tech_stack.split %}
+                        <span class="tech-tag">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
             {% else %}
-                <p>No projects added yet.</p>
+            <p>No projects added yet.</p>
             {% endif %}
         </div>
     </section>
@@ -224,24 +238,26 @@
         <h2 class="section-title">Latest <span>Blogs</span></h2>
         <div class="blog-grid">
             {% if blogs %}
-                {% for blog in blogs %}
-                <div class="blog-card glass-panel">
-                    {% if blog.thumbnail %}
-                    <div class="blog-img">
-                        <img src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}">
-                    </div>
-                    {% endif %}
-                    <div class="blog-content">
-                        <span class="blog-date">{{ blog.created_at|date:"M d, Y" }}</span>
-                        <span class="blog-category">{{ blog.category.name }}</span>
-                        <h3><a href="{% url 'blog_detail' blog.pk %}" style="color: inherit;">{{ blog.title }}</a></h3>
-                        <p>{{ blog.content|truncatewords:25 }}</p>
-                        <a href="{% url 'blog_detail' blog.pk %}" style="color: var(--primary-color); font-weight: 600; margin-top: 10px; display: inline-block;">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
+            {% for blog in blogs %}
+            <div class="blog-card glass-panel">
+                {% if blog.thumbnail %}
+                <div class="blog-img">
+                    <img src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}">
                 </div>
-                {% endfor %}
+                {% endif %}
+                <div class="blog-content">
+                    <span class="blog-date">{{ blog.created_at|date:"M d, Y" }}</span>
+                    <span class="blog-category">{{ blog.category.name }}</span>
+                    <h3><a href="{% url 'blog_detail' blog.pk %}" style="color: inherit;">{{ blog.title }}</a></h3>
+                    <p>{{ blog.content|truncatewords:25 }}</p>
+                    <a href="{% url 'blog_detail' blog.pk %}"
+                        style="color: var(--primary-color); font-weight: 600; margin-top: 10px; display: inline-block;">Read
+                        More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            {% endfor %}
             {% else %}
-                <p>No blog posts added yet.</p>
+            <p>No blog posts added yet.</p>
             {% endif %}
         </div>
     </section>
@@ -290,7 +306,8 @@
                     <div class="form-group">
                         <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Send Message <i class="fas fa-paper-plane"></i></button>
+                    <button type="submit" class="btn btn-primary btn-block">Send Message <i
+                            class="fas fa-paper-plane"></i></button>
                 </form>
             </div>
         </div>
@@ -298,10 +315,12 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; {% now "Y" %} {% if hero %}{{ hero.full_name }}{% else %}Portfolio{% endif %}. All rights reserved.</p>
+        <p>&copy; {% now "Y" %} {% if hero %}{{ hero.full_name }}{% else %}Portfolio{% endif %}. All rights reserved.
+        </p>
     </footer>
 
     <!-- Custom JS -->
     <script src="{% static 'js/script.js' %}"></script>
 </body>
+
 </html>

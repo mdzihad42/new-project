@@ -1,19 +1,22 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ blog.title }} | Blog</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&family=Space+Grotesk:wght@400;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            font-family: var(--font-body); 
-            overflow-x: hidden; 
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
             position: relative;
         }
 
@@ -24,17 +27,18 @@
             left: -10%;
             width: 50vw;
             height: 50vw;
-            background: radial-gradient(circle, rgba(209,0,209,0.15) 0%, rgba(11,12,16,0) 70%);
+            background: radial-gradient(circle, rgba(209, 0, 209, 0.15) 0%, rgba(11, 12, 16, 0) 70%);
             z-index: -1;
             pointer-events: none;
         }
+
         .ambient-glow-2 {
             position: fixed;
             bottom: -20%;
             right: -10%;
             width: 60vw;
             height: 60vw;
-            background: radial-gradient(circle, rgba(69,243,255,0.1) 0%, rgba(11,12,16,0) 70%);
+            background: radial-gradient(circle, rgba(69, 243, 255, 0.1) 0%, rgba(11, 12, 16, 0) 70%);
             z-index: -1;
             pointer-events: none;
         }
@@ -51,7 +55,7 @@
         .back-nav {
             margin-bottom: 40px;
         }
-        
+
         .back-nav a {
             display: inline-flex;
             align-items: center;
@@ -63,7 +67,7 @@
             letter-spacing: 2px;
             font-size: 0.85rem;
         }
-        
+
         .back-nav a:hover {
             color: var(--primary-color);
             transform: translateX(-5px);
@@ -86,7 +90,7 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             margin-bottom: 25px;
-            box-shadow: 0 0 15px rgba(69,243,255,0.2);
+            box-shadow: 0 0 15px rgba(69, 243, 255, 0.2);
         }
 
         .blog-title {
@@ -129,8 +133,8 @@
             object-fit: cover;
             border-radius: 20px;
             margin-bottom: 50px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .blog-content {
@@ -144,7 +148,8 @@
             margin-bottom: 25px;
         }
 
-        .blog-content h2, .blog-content h3 {
+        .blog-content h2,
+        .blog-content h3 {
             font-family: var(--font-heading);
             color: #fff;
             margin: 50px 0 20px;
@@ -160,14 +165,14 @@
             font-style: italic;
             font-size: 1.3rem;
             color: #fff;
-            background: linear-gradient(90deg, rgba(209,0,209,0.1), transparent);
+            background: linear-gradient(90deg, rgba(209, 0, 209, 0.1), transparent);
             border-radius: 0 15px 15px 0;
         }
 
         .share-footer {
             margin-top: 80px;
             padding-top: 40px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
         }
 
@@ -191,44 +196,64 @@
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
             font-size: 1.2rem;
             transition: 0.3s;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .social-share a:hover {
             background: var(--primary-color);
             color: var(--bg-color);
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(69,243,255,0.4);
+            box-shadow: 0 5px 15px rgba(69, 243, 255, 0.4);
             border-color: var(--primary-color);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 768px) {
-            .blog-title { font-size: 2.5rem; }
-            .blog-wrapper { padding-top: 120px; }
-            .blog-content blockquote { font-size: 1.1rem; padding: 15px 20px; }
+            .blog-title {
+                font-size: 2.5rem;
+            }
+
+            .blog-wrapper {
+                padding-top: 120px;
+            }
+
+            .blog-content blockquote {
+                font-size: 1.1rem;
+                padding: 15px 20px;
+            }
         }
     </style>
 </head>
+
 <body>
     <div id="stars"></div>
     <div class="ambient-glow-1"></div>
     <div class="ambient-glow-2"></div>
-    
+
     <nav class="navbar scrolled">
         <div class="nav-content">
             <a href="{% url 'index' %}" class="logo">Portfolio</a>
             <ul class="nav-links">
                 <li><a href="{% url 'index' %}">Home</a></li>
             </ul>
+            <div class="hamburger">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
     </nav>
 
@@ -252,15 +277,18 @@
         {% endif %}
 
         <article class="blog-content">
-{{ blog.content|safe }}
+            {{ blog.content|safe }}
         </article>
 
         <div class="share-footer">
             <h4>Share this story</h4>
             <div class="social-share">
-                <a href="https://twitter.com/intent/tweet?text={{ blog.title }}&url={{ request.build_absolute_uri }}" target="_blank"><i class="fab fa-twitter"></i></a>
-                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ blog.title }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/intent/tweet?text={{ blog.title }}&url={{ request.build_absolute_uri }}"
+                    target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ blog.title }}"
+                    target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
+                    target="_blank"><i class="fab fa-facebook-f"></i></a>
             </div>
         </div>
     </main>
@@ -271,4 +299,5 @@
 
     <script src="{% static 'js/script.js' %}"></script>
 </body>
+
 </html>
