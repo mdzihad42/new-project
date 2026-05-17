@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Message</title>
+</head>
+<body style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f7f6; padding: 40px 20px;">
+        <tr>
+            <td align="center">
+                <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background-color: #1a1a2e; padding: 40px 30px; text-align: center;">
+                            <h1 style="color: #45f3ff; margin: 0; font-size: 28px; letter-spacing: 1px;">New Portfolio Inquiry</h1>
+                            <p style="color: #b3b3b3; margin: 10px 0 0; font-size: 16px;">You have received a new message from your website</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Body -->
+                    <tr>
+                        <td style="padding: 40px 30px;">
+                            <p style="color: #555555; font-size: 16px; line-height: 1.6; margin-top: 0;">Hello <strong>Zihad</strong>,</p>
+                            <p style="color: #555555; font-size: 16px; line-height: 1.6;">Someone just reached out to you via the contact form on your portfolio. Here are the details:</p>
+                            
+                            <!-- Details Box -->
+                            <table width="100%" cellpadding="15" cellspacing="0" border="0" style="background-color: #f9f9f9; border-left: 4px solid #d100d1; margin: 30px 0; border-radius: 4px;">
+                                <tr>
+                                    <td style="color: #333333; font-size: 15px; border-bottom: 1px solid #eeeeee;">
+                                        <strong>Name:</strong> {{ name }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #333333; font-size: 15px; border-bottom: 1px solid #eeeeee;">
+                                        <strong>Email:</strong> <a href="mailto:{{ email }}" style="color: #45f3ff; text-decoration: none;">{{ email }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="color: #333333; font-size: 15px;">
+                                        <strong>Subject:</strong> {{ subject }}
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Message Content -->
+                            <h3 style="color: #1a1a2e; font-size: 18px; margin: 0 0 15px; border-bottom: 2px solid #eeeeee; padding-bottom: 10px;">Message Content</h3>
+                            <div style="background-color: #ffffff; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; color: #444444; font-size: 15px; line-height: 1.8; white-space: pre-wrap;">{{ message }}</div>
+                            
+                            <div style="margin-top: 40px; text-align: center;">
+                                <a href="mailto:{{ email }}" style="background-color: #d100d1; color: #ffffff; text-decoration: none; padding: 14px 30px; border-radius: 30px; font-weight: bold; font-size: 16px; display: inline-block;">Reply to {{ name }}</a>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-top: 1px solid #eeeeee;">
+                            <p style="color: #888888; font-size: 14px; margin: 0;">This email was sent automatically from your portfolio website.</p>
+                            <p style="color: #aaaaaa; font-size: 12px; margin: 10px 0 0;">&copy; {% now "Y" %} Zihad Hossain. All rights reserved.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

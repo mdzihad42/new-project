@@ -1,0 +1,274 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blog.title }} | Blog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            font-family: var(--font-body); 
+            overflow-x: hidden; 
+            position: relative;
+        }
+
+        /* Ambient Glowing Orbs in Background */
+        .ambient-glow-1 {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(209,0,209,0.15) 0%, rgba(11,12,16,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        .ambient-glow-2 {
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(69,243,255,0.1) 0%, rgba(11,12,16,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .blog-wrapper {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 150px 5% 100px;
+            animation: fadeIn 1s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .back-nav {
+            margin-bottom: 40px;
+        }
+        
+        .back-nav a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+        }
+        
+        .back-nav a:hover {
+            color: var(--primary-color);
+            transform: translateX(-5px);
+        }
+
+        .blog-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            background: rgba(69, 243, 255, 0.05);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(69,243,255,0.2);
+        }
+
+        .blog-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 25px;
+            background: linear-gradient(45deg, #ffffff, #b3b3b3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .blog-meta {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .blog-meta .dot {
+            width: 4px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 50%;
+        }
+
+        .featured-image {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 50px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .blog-content {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #d4d4d4;
+            white-space: pre-wrap;
+        }
+
+        .blog-content p {
+            margin-bottom: 25px;
+        }
+
+        .blog-content h2, .blog-content h3 {
+            font-family: var(--font-heading);
+            color: #fff;
+            margin: 50px 0 20px;
+            background: linear-gradient(45deg, var(--primary-color), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .blog-content blockquote {
+            border-left: 4px solid var(--secondary-color);
+            padding: 20px 30px;
+            margin: 40px 0;
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #fff;
+            background: linear-gradient(90deg, rgba(209,0,209,0.1), transparent);
+            border-radius: 0 15px 15px 0;
+        }
+
+        .share-footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .share-footer h4 {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-share a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .social-share a:hover {
+            background: var(--primary-color);
+            color: var(--bg-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(69,243,255,0.4);
+            border-color: var(--primary-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .blog-title { font-size: 2.5rem; }
+            .blog-wrapper { padding-top: 120px; }
+            .blog-content blockquote { font-size: 1.1rem; padding: 15px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="stars"></div>
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+    
+    <nav class="navbar scrolled">
+        <div class="nav-content">
+            <a href="{% url 'index' %}" class="logo">Portfolio</a>
+            <ul class="nav-links">
+                <li><a href="{% url 'index' %}">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="blog-wrapper">
+        <div class="back-nav">
+            <a href="{% url 'index' %}#blog"><i class="fas fa-arrow-left"></i> Back to All Blogs</a>
+        </div>
+
+        <header class="blog-header">
+            <span class="category-badge">{{ blog.category.name }}</span>
+            <h1 class="blog-title">{{ blog.title }}</h1>
+            <div class="blog-meta">
+                <span><i class="far fa-calendar-alt"></i> {{ blog.created_at|date:"F d, Y" }}</span>
+                <span class="dot"></span>
+                <span><i class="far fa-clock"></i> {{ blog.created_at|time:"h:i A" }}</span>
+            </div>
+        </header>
+
+        {% if blog.thumbnail %}
+        <img src="{{ blog.thumbnail.url }}" alt="{{ blog.title }}" class="featured-image">
+        {% endif %}
+
+        <article class="blog-content">
+{{ blog.content|safe }}
+        </article>
+
+        <div class="share-footer">
+            <h4>Share this story</h4>
+            <div class="social-share">
+                <a href="https://twitter.com/intent/tweet?text={{ blog.title }}&url={{ request.build_absolute_uri }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ blog.title }}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <footer style="margin-top: 50px; text-align: center; padding: 30px; border-top: 1px solid rgba(255,255,255,0.05);">
+        <p style="color: var(--text-muted);">&copy; {% now "Y" %} Portfolio. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
