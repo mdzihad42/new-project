@@ -37,6 +37,7 @@
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#projects">Projects</a></li>
+                <li><a href="#recommendations">Reviews</a></li>
                 <li><a href="#blog">Blog</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -72,7 +73,11 @@
             </div>
             <div class="hero-image">
                 {% if hero.profile_photo %}
-                <img src="{{ hero.profile_photo.url }}" alt="{{ hero.full_name }}">
+                <div class="avatar-container">
+                    <div class="orbit orbit-1"></div>
+                    <div class="orbit orbit-2"></div>
+                    <img src="{{ hero.profile_photo.url }}" alt="{{ hero.full_name }}">
+                </div>
                 {% endif %}
             </div>
             {% else %}
@@ -88,20 +93,58 @@
         <div class="about-container glass-panel">
             {% if about %}
             <div class="about-image">
-                {% if about.profile_image %}
-                <img src="{{ about.profile_image.url }}" alt="Profile Image">
-                {% endif %}
+                <div class="about-image-wrapper">
+                    {% if about.profile_image %}
+                    <img src="{{ about.profile_image.url }}" alt="Profile Image">
+                    {% endif %}
+                </div>
             </div>
             <div class="about-info">
                 <p class="bio">{{ about.long_bio }}</p>
-                <ul class="personal-info">
-                    <li><strong>Birthday:</strong> {{ about.date_of_birth }}</li>
-                    <li><strong>Email:</strong> {{ about.email }}</li>
-                    <li><strong>Phone:</strong> {{ about.phone }}</li>
-                    <li><strong>Address:</strong> {{ about.address }}</li>
-                    <li><strong>Languages:</strong> {{ about.languages }}</li>
-                    <li><strong>Hobbies:</strong> {{ about.hobbies }}</li>
-                </ul>
+                <div class="personal-info-grid">
+                    <div class="info-item glass-panel">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div>
+                            <span>Birthday</span>
+                            <p>{{ about.date_of_birth }}</p>
+                        </div>
+                    </div>
+                    <div class="info-item glass-panel">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <span>Email</span>
+                            <p>{{ about.email }}</p>
+                        </div>
+                    </div>
+                    <div class="info-item glass-panel">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <span>Phone</span>
+                            <p>{{ about.phone }}</p>
+                        </div>
+                    </div>
+                    <div class="info-item glass-panel">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <span>Address</span>
+                            <p>{{ about.address }}</p>
+                        </div>
+                    </div>
+                    <div class="info-item glass-panel">
+                        <i class="fas fa-language"></i>
+                        <div>
+                            <span>Languages</span>
+                            <p>{{ about.languages }}</p>
+                        </div>
+                    </div>
+                    <div class="info-item glass-panel">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <span>Hobbies</span>
+                            <p>{{ about.hobbies }}</p>
+                        </div>
+                    </div>
+                </div>
                 {% if about.cv_download_link %}
                 <a href="{{ about.cv_download_link }}" class="btn btn-primary" target="_blank">View Extended CV <i
                         class="fas fa-external-link-alt"></i></a>
@@ -116,15 +159,21 @@
     <!-- Skills Section -->
     <section id="skills" class="section">
         <h2 class="section-title">My <span>Skills</span></h2>
-        <div class="skills-container">
+        
+        <!-- Interactive Category Filter Bar -->
+        <div class="skills-filter-container" id="skillsFilters">
+            <!-- Dynamically populated by JavaScript -->
+        </div>
+
+        <div class="skills-container" id="skillsGrid">
             {% if skills %}
             {% for skill in skills %}
-            <div class="skill-card glass-panel">
+            <div class="skill-card glass-panel" data-category="{{ skill.category }}">
                 <div class="skill-icon">
                     <i class="{{ skill.icon_class }}"></i>
                 </div>
                 <h3>{{ skill.name }}</h3>
-                <p class="skill-category">{{ skill.category }}</p>
+                <span class="skill-category">{{ skill.category }}</span>
                 <div class="progress-bar">
                     <div class="progress" style="width: {{ skill.level }}%;"></div>
                 </div>
@@ -132,7 +181,7 @@
             </div>
             {% endfor %}
             {% else %}
-            <p>No skills added yet.</p>
+            <p style="text-align: center; color: var(--text-muted); font-size: 1.1rem; width: 100%;">No skills added yet.</p>
             {% endif %}
         </div>
     </section>
@@ -147,8 +196,7 @@
                     {% for exp in experiences %}
                     <div class="timeline-item glass-panel">
                         <div class="timeline-dot"></div>
-                        <div class="timeline-date">{{ exp.start_date|date:"M Y" }} - {% if exp.end_date %}{{
-                            exp.end_date|date:"M Y" }}{% else %}Present{% endif %}</div>
+                        <div class="timeline-date">{{ exp.start_date|date:"M Y" }} - {% if exp.end_date %}{{ exp.end_date|date:"M Y" }}{% else %}Present{% endif %}</div>
                         <h3>{{ exp.job_title }}</h3>
                         <h4>{{ exp.company_name }}</h4>
                         <p>{{ exp.responsibilities }}</p>
@@ -230,6 +278,76 @@
             <p>No projects added yet.</p>
             {% endif %}
         </div>
+    </section>
+
+    <!-- Recommendations Section -->
+    <section id="recommendations" class="section">
+        <h2 class="section-title"><span>Recommendations</span></h2>
+        
+        <div class="recommendations-slider-container">
+            <!-- Navigation Buttons -->
+            <button class="slider-btn prev-btn" id="recPrevBtn" aria-label="Previous Review">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            
+            <div class="recommendations-slider">
+                <div class="recommendations-track" id="recTrack">
+                    {% if recommendations %}
+                        {% for rec in recommendations %}
+                        <div class="recommendation-slide glass-panel">
+                            <div class="quote-icon">
+                                <i class="fas fa-quote-left"></i>
+                            </div>
+                            
+                            <!-- Star Rating (Premium visual touch) -->
+                            <div class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            
+                            <p class="review-text">"{{ rec.review_text }}"</p>
+                            
+                            <div class="client-info">
+                                <div class="client-avatar">
+                                    {% if rec.client_image %}
+                                    <img src="{{ rec.client_image.url }}" alt="{{ rec.client_name }}">
+                                    {% else %}
+                                    <div class="client-avatar-placeholder"><i class="fas fa-user"></i></div>
+                                    {% endif %}
+                                    <div class="avatar-glow"></div>
+                                </div>
+                                
+                                <div class="client-details">
+                                    <h3>{{ rec.client_name }}</h3>
+                                    <p>{{ rec.client_title }}</p>
+                                </div>
+                                
+                                {% if rec.linkedin_link %}
+                                <a href="{{ rec.linkedin_link }}" target="_blank" class="rec-linkedin-btn" title="LinkedIn Profile">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="recommendation-slide glass-panel no-data-slide" style="display: flex; align-items: center; justify-content: center; min-height: 200px;">
+                            <p style="text-align: center; color: var(--text-muted); font-size: 1.1rem; width: 100%;">No recommendations added yet. Add them in the Django Admin panel.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <button class="slider-btn next-btn" id="recNextBtn" aria-label="Next Review">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <!-- Pagination Dots -->
+        <div class="slider-dots" id="recDots"></div>
     </section>
 
     <!-- Blog Section -->

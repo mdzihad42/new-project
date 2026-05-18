@@ -122,3 +122,15 @@ class BlogPost(models.Model):
 
     def __str__(self):
         return self.title
+
+# Recommendation / Testimonial Model
+class Recommendation(models.Model):
+    client_name = models.CharField(max_length=100)
+    client_title = models.CharField(max_length=150, help_text="e.g., Senior Software Engineer at Google")
+    client_image = models.ImageField(upload_to='recommendations/', blank=True, null=True)
+    review_text = models.TextField()
+    linkedin_link = models.URLField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Recommendation from {self.client_name}"

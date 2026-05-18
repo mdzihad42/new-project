@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Hero, About, Skill, Project, Experience, Education, BlogPost, Contact
+from .models import Hero, About, Skill, Project, Experience, Education, BlogPost, Contact, Recommendation
 
 def index(request):
     if request.method == 'POST':
@@ -75,6 +75,7 @@ def index(request):
         'experiences': Experience.objects.all().order_by('-start_date'),
         'educations': Education.objects.all().order_by('-passing_year'),
         'blogs': BlogPost.objects.all().order_by('-created_at'),
+        'recommendations': Recommendation.objects.all().order_by('-created_at'),
     }
     return render(request, 'myapp/index.html', context)
 

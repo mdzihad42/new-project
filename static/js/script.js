@@ -222,9 +222,9 @@ function animateSnake() {
         let radius = 12 - (i * 10 / numPoints); // Tapering from 12 at head to 2 at tail
         if (radius < 2) radius = 2;
         ctx.arc(points[i].x, points[i].y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(69, 243, 255, 0.8)';
+        ctx.fillStyle = 'rgba(0, 255, 102, 0.8)';
         ctx.shadowBlur = 10;
-        ctx.shadowColor = '#45f3ff';
+        ctx.shadowColor = '#00ff66';
         ctx.fill();
     }
     
@@ -241,10 +241,10 @@ function animateSnake() {
     // Head shape
     ctx.beginPath();
     ctx.ellipse(0, 0, 16, 12, 0, 0, Math.PI * 2);
-    ctx.fillStyle = '#0b0c10'; // Dark head body
+    ctx.fillStyle = '#0d0e12'; // Dark head body
     ctx.fill();
     ctx.lineWidth = 3;
-    ctx.strokeStyle = '#45f3ff'; // Cyan border
+    ctx.strokeStyle = '#00ff66'; // Green border
     ctx.stroke();
 
     // Eyes
@@ -443,6 +443,167 @@ if (contactForm) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = origBtnHTML;
             showToast('Connection Error', 'Could not send message. Please check your internet connection.', 'error');
+        });
+    });
+}
+
+/* ==========================================================================
+   Recommendations Slider / Carousel
+   ========================================================================== */
+const recTrack = document.getElementById('recTrack');
+const recSlides = Array.from(recTrack ? recTrack.children : []);
+const recPrevBtn = document.getElementById('recPrevBtn');
+const recNextBtn = document.getElementById('recNextBtn');
+const recDotsContainer = document.getElementById('recDots');
+
+if (recTrack && recSlides.length > 0) {
+    let currentIndex = 0;
+    
+    // Create pagination dots
+    recSlides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = `dot ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => {
+            goToSlide(index);
+        });
+        if (recDotsContainer) recDotsContainer.appendChild(dot);
+    });
+    
+    const dots = Array.from(recDotsContainer ? recDotsContainer.children : []);
+    
+    function updateSlider() {
+        // Move track
+        recTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        // Update active dots
+        dots.forEach((dot, index) => {
+            if (index === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    function goToSlide(index) {
+        currentIndex = index;
+        updateSlider();
+    }
+    
+    if (recNextBtn) {
+        recNextBtn.addEventListener('click', () => {
+            if (currentIndex < recSlides.length - 1) {
+                currentIndex++;
+            } else {
+                currentIndex = 0; // Loop back
+            }
+            updateSlider();
+        });
+    }
+    
+    if (recPrevBtn) {
+        recPrevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+            } else {
+                currentIndex = recSlides.length - 1; // Loop to end
+            }
+            updateSlider();
+        });
+    }
+    
+    // Auto slide every 8 seconds
+    let autoSlideInterval = setInterval(() => {
+        if (currentIndex < recSlides.length - 1) {
+            currentIndex++;
+        } else {
+            currentIndex = 0;
+        }
+        updateSlider();
+    }, 8000);
+    
+    // Pause auto slide on mouse enter, resume on leave
+    const sliderContainer = document.querySelector('.recommendations-slider-container');
+    if (sliderContainer) {
+        sliderContainer.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+        
+        sliderContainer.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(() => {
+                if (currentIndex < recSlides.length - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0;
+                }
+                updateSlider();
+            }, 8000);
+        });
+    }
+}
+
+/* ==========================================================================
+   Skills Category Dynamic Filter Tabs
+   ========================================================================== */
+const skillsFiltersContainer = document.getElementById('skillsFilters');
+const skillsGrid = document.getElementById('skillsGrid');
+const skillCards = Array.from(skillsGrid ? skillsGrid.querySelectorAll('.skill-card') : []);
+
+if (skillsFiltersContainer && skillCards.length > 0) {
+    // 1. Extract unique categories
+    const categories = new Set();
+    skillCards.forEach(card => {
+        const cat = card.getAttribute('data-category');
+        if (cat) categories.add(cat.trim());
+    });
+    
+    // 2. Create "All" button
+    const allBtn = document.createElement('button');
+    allBtn.className = 'filter-tab-btn active';
+    allBtn.textContent = 'All';
+    allBtn.setAttribute('data-target', 'all');
+    skillsFiltersContainer.appendChild(allBtn);
+    
+    // 3. Create buttons for other categories
+    categories.forEach(category => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-tab-btn';
+        btn.textContent = category;
+        btn.setAttribute('data-target', category);
+        skillsFiltersContainer.appendChild(btn);
+    });
+    
+    // 4. Hook up click listeners
+    const filterButtons = Array.from(skillsFiltersContainer.querySelectorAll('.filter-tab-btn'));
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(b => b.classList.remove('active'));
+            // Add active class to this button
+            btn.classList.add('active');
+            
+            const target = btn.getAttribute('data-target');
+            
+            // Filter cards with fade transitions
+            skillCards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                
+                if (target === 'all' || cardCat === target) {
+                    card.style.display = 'flex';
+                    // Re-trigger animation / entry
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 300); // matches transition time
+                }
+            });
         });
     });
 }
