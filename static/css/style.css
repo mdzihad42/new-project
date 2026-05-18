@@ -540,28 +540,70 @@ ul {
 @media (max-width: 992px) {
     .about-container {
         flex-direction: column;
-        padding: 40px 30px;
+        padding: 50px 30px;
         gap: 45px;
+        align-items: stretch;
+    }
+    .about-image {
+        align-self: center;
+        margin-bottom: 10px;
     }
     .about-image img {
-        width: 100%;
-        max-width: 320px;
-        height: 380px;
+        width: 290px;
+        height: 360px;
     }
     .about-image-wrapper::before {
+        top: 10px;
+        left: 10px;
         right: -10px;
         bottom: -10px;
     }
 }
 
 @media (max-width: 768px) {
+    .about-container {
+        padding: 40px 20px;
+        gap: 35px;
+    }
     .personal-info-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 12px;
     }
     .about-info .bio {
         font-size: 1.05rem;
+        line-height: 1.75;
         padding-left: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-container {
+        padding: 30px 15px;
+        gap: 30px;
+    }
+    .about-image img {
+        width: 240px;
+        height: 300px;
+    }
+    .info-item {
+        padding: 12px 15px;
+        gap: 12px;
+        border-radius: 12px;
+    }
+    .info-item i {
+        width: 38px;
+        height: 38px;
+        font-size: 1.15rem;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+    .info-item span {
+        font-size: 0.75rem;
+        letter-spacing: 0.8px;
+        margin-bottom: 2px;
+    }
+    .info-item p {
+        font-size: 0.95rem;
     }
 }
 
