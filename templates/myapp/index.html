@@ -57,8 +57,7 @@
                 <p class="short-intro">{{ hero.short_intro }}</p>
                 <div class="hero-buttons">
                     {% if hero.resume %}
-                    <a href="{{ hero.resume.url }}" class="btn btn-primary" download>Download CV <i
-                            class="fas fa-download"></i></a>
+                    <button id="openCvBtn" class="btn btn-primary">View CV <i class="fas fa-file-pdf"></i></button>
                     {% endif %}
                     <a href="#contact" class="btn btn-secondary">Contact Me <i class="fas fa-envelope"></i></a>
                 </div>
@@ -292,7 +291,7 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-                <form action="{% url 'index' %}" method="POST">
+                <form id="contactForm" action="{% url 'index' %}" method="POST">
                     {% csrf_token %}
                     <div class="form-group">
                         <input type="text" name="name" placeholder="Your Name" required>
@@ -318,6 +317,28 @@
         <p>&copy; {% now "Y" %} {% if hero %}{{ hero.full_name }}{% else %}Portfolio{% endif %}. All rights reserved.
         </p>
     </footer>
+
+    <!-- CV Preview Modal -->
+    {% if hero.resume %}
+    <div id="cvModal" class="cv-modal">
+        <div class="cv-modal-content glass-panel">
+            <div class="cv-modal-header">
+                <h3>Curriculum Vitae (CV)</h3>
+                <span class="cv-modal-close">&times;</span>
+            </div>
+            <div class="cv-modal-body">
+                <iframe src="{{ hero.resume.url }}" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+            <div class="cv-modal-footer">
+                <a href="{{ hero.resume.url }}" class="btn btn-primary" download>Download CV <i class="fas fa-download"></i></a>
+                <button class="btn btn-secondary cv-modal-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
 
     <!-- Custom JS -->
     <script src="{% static 'js/script.js' %}"></script>

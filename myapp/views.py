@@ -11,6 +11,11 @@ def index(request):
         subject = request.POST.get('subject')
         message = request.POST.get('message')
         
+        is_ajax_request = (
+            request.headers.get('x-requested-with') == 'XMLHttpRequest' or
+            request.POST.get('is_ajax') == 'true'
+        )
+        
         if name and email and subject and message:
             Contact.objects.create(
                 name=name,
@@ -45,8 +50,22 @@ def index(request):
             except Exception as e:
                 print(f"Error sending email: {e}")
 
+            if is_ajax_request:
+                from django.http import JsonResponse
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Your message has been sent successfully!'
+                })
+
             messages.success(request, 'Your message has been sent successfully!')
             return redirect('index')
+        else:
+            if is_ajax_request:
+                from django.http import JsonResponse
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Please fill out all required fields.'
+                })
 
     context = {
         'hero': Hero.objects.first(),

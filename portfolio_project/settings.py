@@ -140,3 +140,6 @@ EMAIL_USE_TLS = False
 EMAIL_HOST_USER = 'zihad@crsyndicate.info'  # Your Gmail address
 EMAIL_HOST_PASSWORD = 'ZihadDomain017#'  # Replace with your Gmail app password
 DEFAULT_FROM_EMAIL = 'zihadhossain.dev@gmail.com'  # Your Gmail address
+
+# Allow Same-Origin iFrames (fixes clickjacking block for PDF CV Modal)
+X_FRAME_OPTIONS = 'SAMEORIGIN'

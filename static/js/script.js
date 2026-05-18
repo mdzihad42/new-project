@@ -290,3 +290,159 @@ function animateSnake() {
 
 // Start animation
 animateSnake();
+
+/* ==========================================================================
+   CV Modal Control
+   ========================================================================== */
+const cvModal = document.getElementById('cvModal');
+const openCvBtn = document.getElementById('openCvBtn');
+const closeCvElements = document.querySelectorAll('.cv-modal-close, .cv-modal-close-btn');
+
+if (openCvBtn && cvModal) {
+    openCvBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        cvModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Lock scrolling
+    });
+}
+
+closeCvElements.forEach(element => {
+    element.addEventListener('click', () => {
+        if (cvModal) {
+            cvModal.classList.remove('active');
+            document.body.style.overflow = ''; // Unlock scrolling
+        }
+    });
+});
+
+if (cvModal) {
+    // Close modal when clicking outside content
+    cvModal.addEventListener('click', (e) => {
+        if (e.target === cvModal) {
+            cvModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Close modal when pressing ESC key
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && cvModal.classList.contains('active')) {
+            cvModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+/* ==========================================================================
+   Toast Notification System
+   ========================================================================== */
+function showToast(title, message, type = 'success') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    // Create Toast element
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+
+    // Icons from font-awesome
+    const iconClass = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+
+    toast.innerHTML = `
+        <div class="toast-icon">
+            <i class="${iconClass}"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <div class="toast-close">
+            <i class="fas fa-times"></i>
+        </div>
+    `;
+
+    // Append to container
+    container.appendChild(toast);
+
+    // Trigger sliding animation with tiny delay
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+
+    // Auto-remove toast after 5 seconds
+    const autoCloseTimeout = setTimeout(() => {
+        removeToast(toast);
+    }, 5000);
+
+    // Close button event
+    const closeBtn = toast.querySelector('.toast-close');
+    closeBtn.addEventListener('click', () => {
+        clearTimeout(autoCloseTimeout);
+        removeToast(toast);
+    });
+}
+
+function removeToast(toast) {
+    toast.classList.remove('show');
+    // Wait for transition before removing from DOM
+    toast.addEventListener('transitionend', () => {
+        toast.remove();
+    });
+}
+
+/* ==========================================================================
+   AJAX Contact Form Submission
+   ========================================================================== */
+const contactForm = document.getElementById('contactForm');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const origBtnHTML = submitBtn.innerHTML;
+
+        // Visual loading state
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `Sending... <i class="fas fa-spinner fa-spin"></i>`;
+
+        // Get Form Data
+        const formData = new FormData(contactForm);
+        formData.append('is_ajax', 'true'); // Backup flag
+
+        // Fetch URL
+        const formAction = contactForm.getAttribute('action') || '/';
+
+        // AJAX Request
+        fetch(formAction, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest', // Standard Django AJAX header
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Restore button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origBtnHTML;
+
+            if (data.success) {
+                showToast('Success!', data.message || 'Your message has been sent successfully.', 'success');
+                contactForm.reset(); // Clear all form inputs
+            } else {
+                showToast('Form Error', data.message || 'Please check the form and try again.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('AJAX Submit Error:', error);
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origBtnHTML;
+            showToast('Connection Error', 'Could not send message. Please check your internet connection.', 'error');
+        });
+    });
+}
