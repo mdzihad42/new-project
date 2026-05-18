@@ -316,9 +316,15 @@
 
     <nav class="navbar scrolled">
         <div class="nav-content">
-            <a href="{% url 'index' %}" class="logo">Portfolio</a>
+            <a href="{% url 'index' %}" class="logo">{% if hero %}{{ hero.full_name }}{% else %}Portfolio{% endif %}</a>
             <ul class="nav-links">
-                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'index' %}#home">Home</a></li>
+                <li><a href="{% url 'index' %}#about">About</a></li>
+                <li><a href="{% url 'index' %}#skills">Skills</a></li>
+                <li><a href="{% url 'index' %}#experience">Experience</a></li>
+                <li><a href="{% url 'index' %}#projects">Projects</a></li>
+                <li><a href="{% url 'index' %}#blog">Blog</a></li>
+                <li><a href="{% url 'index' %}#contact">Contact</a></li>
             </ul>
             <div class="hamburger">
                 <i class="fas fa-bars"></i>
@@ -404,7 +410,7 @@
     </div>
 
     <footer>
-        <p>&copy; {% now "Y" %} Portfolio. All rights reserved.</p>
+        <p>&copy; {% now "Y" %} {% if hero %}{{ hero.full_name }}{% else %}Portfolio{% endif %}. All rights reserved.</p>
     </footer>
 
     <script src="{% static 'js/script.js' %}"></script>

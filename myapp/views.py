@@ -61,8 +61,10 @@ def index(request):
 
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
-    return render(request, 'myapp/project_detail.html', {'project': project})
+    hero = Hero.objects.first()
+    return render(request, 'myapp/project_detail.html', {'project': project, 'hero': hero})
 
 def blog_detail(request, pk):
     blog = get_object_or_404(BlogPost, pk=pk)
-    return render(request, 'myapp/blog_detail.html', {'blog': blog})
+    hero = Hero.objects.first()
+    return render(request, 'myapp/blog_detail.html', {'blog': blog, 'hero': hero})
