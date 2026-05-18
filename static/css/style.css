@@ -1481,6 +1481,7 @@ footer p {
     position: relative;
     width: 65px;
     height: 65px;
+    flex-shrink: 0;
 }
 
 .recommendation-slide .client-avatar img,
@@ -1548,6 +1549,7 @@ footer p {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     color: var(--text-muted);
     font-size: 1.1rem;
     transition: 0.3s;
@@ -1643,5 +1645,21 @@ footer p {
     .recommendation-slide .client-avatar {
         width: 50px;
         height: 50px;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .recommendation-slide .client-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+        padding-top: 20px;
+    }
+    
+    .rec-linkedin-btn {
+        margin-left: 0;
+        margin-top: 5px;
     }
 }
