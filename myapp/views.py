@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Hero, About, Skill, Project, Experience, Education, BlogPost, Contact,
+from .models import Hero, About, Skill, Project, Experience, Education, BlogPost, Contact, Recommendation
 
 def index(request):
     if request.method == 'POST':
